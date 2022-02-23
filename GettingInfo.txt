@@ -1,0 +1,2 @@
+Open Zenmap & add IP from target computer and search
+for vulnerabilities

